@@ -11,17 +11,30 @@ import UIKit
 class ViewController: UIViewController {
     
     var currentValue: Int = 0
-    var targetValue: Int = 0
+    var targetValue: Int = 0 {
+        didSet {
+            targetLabel.text = "Move the Bull's Eye as close as you can to: \(targetValue)"
+        }
+    }
     
-    var round: Int = 0
-    var totalScore: Int = 0
+    var round: Int = 0 {
+        didSet {
+            roundLabel.text = "Round: \(round)"
+        }
+    }
+    
+    var totalScore: Int = 0 {
+        didSet {
+            scoreLabel.text = "Score: \(totalScore)"
+        }
+    }
     
     @IBOutlet weak var targetLabel: UILabel!
     @IBOutlet weak var slider: UISlider!
     
     @IBOutlet weak var roundLabel: UILabel!
     @IBOutlet weak var scoreLabel: UILabel!
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         startNewRound()
@@ -56,13 +69,12 @@ class ViewController: UIViewController {
         }
         
         let alert = UIAlertController(title: title, message: "You scored \(score) points", preferredStyle: .alert)
-        let action = UIAlertAction(title: "Awesome", style: .default, handler: nil)
+        let action = UIAlertAction(title: "Awesome", style: .default, handler: { action in self.startNewRound() })
         
         alert.addAction(action)
         
         present(alert, animated: true, completion: nil)
         totalScore += score
-        startNewRound()
     }
     
     @IBAction func sliderMoved(_ slider: UISlider) {
@@ -79,12 +91,9 @@ class ViewController: UIViewController {
         round = round + 1
         targetValue = Int.random(in: 1...100)
         currentValue = 50
-        roundLabel.text = String(round)
-        scoreLabel.text = String(totalScore)
-        targetLabel.text = String(targetValue)
         slider.value = Float(currentValue)
     }
-
-
+    
+    
 }
 
